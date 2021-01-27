@@ -14,14 +14,14 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('test',function(){
-return view('layouts.master');
-
-Route::group(['prefix'=> 'admin' , 'middleware'=>['auth']],function(){
-    Route::get('/',function()
+Route::get('admin',function(){
+    return view('admin.index');
+    
+Route::group(['prefix'=> 'admin' , 'middleware'=>['auth']] , function (){
+    Route::resource('provinsi',ProvinsiController::class);
     {
         return view('admin.index');
-    });
+    };
     Route::resources('Provinsi',ProvinsiController::class);
     Route::resources('Kota',KotaController::class);
     Route::resources('Kecamatan',KecamatanController::class);

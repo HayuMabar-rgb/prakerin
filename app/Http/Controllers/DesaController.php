@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\desa;
+use App\Models\kecamatan;
 use Illuminate\Http\Request;
 
 class DesaController extends Controller
@@ -14,7 +15,10 @@ class DesaController extends Controller
      */
     public function index()
     {
-        //
+        $desa = Desa::all();
+        $kecamatan = Kecamatan::all();
+
+        // return view('admin.desa.index',compact('desa'));
     }
 
     /**
@@ -24,7 +28,9 @@ class DesaController extends Controller
      */
     public function create()
     {
-        //
+        $desa = Desa::all();
+        $kecamatan = Kecamatan::all();
+        return view('admin.desa.create', compact ('kecamatan'));
     }
 
     /**
@@ -35,7 +41,12 @@ class DesaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $desa = new Desa();
+        $desa ->id_kecamatan = $request->id_kecamatan;
+        $desa ->nama_desa = $requrest->nama_desa;
+        $desa ->save();
+        return redirect()->route('desa.index')
+        ->with(['succes'=>' Data <b> ', $desa->nama_desa,'</b> berhasil di input']);
     }
 
     /**
@@ -46,7 +57,8 @@ class DesaController extends Controller
      */
     public function show(desa $desa)
     {
-        //
+        $desa = Desa::findOrFail($id);
+        return view('admin.desa.show',compact('desa'));
     }
 
     /**
@@ -57,7 +69,9 @@ class DesaController extends Controller
      */
     public function edit(desa $desa)
     {
-        //
+        $desa = Desa::findOrFail($id);
+        $kecamatan = Kecamatan::all();
+        return view('admin.desa.edit');
     }
 
     /**
@@ -69,7 +83,12 @@ class DesaController extends Controller
      */
     public function update(Request $request, desa $desa)
     {
-        //
+        $desa = Desa::findOrFail();
+        $desa ->id_kecamatan = $requrest->id_kecamatan;
+        $desa ->nama_desa = $request->nama_desa;
+        $desa ->save();
+        return redirect()->route('desa.index')->with(['succes'=>'Data<b>' , $desa->nama_desa,
+        '</b> berhasil di edit']);
     }
 
     /**

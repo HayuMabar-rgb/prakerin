@@ -11,4 +11,6 @@ class provinsi extends Model
         return $this->hasMany('app\models\kota\id_provinsi');
     }
     use HasFactory;
+    protected $fillable = ['kode_provinsi','nama_provinsi'];
+    public $timestamps = true; 
 }

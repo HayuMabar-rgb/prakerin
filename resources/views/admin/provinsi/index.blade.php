@@ -29,7 +29,7 @@
         <td>{{$data->$nama_provinsi}}</td>        
         
         </tr>
-        <form action="{{route('provinsi.destroy,$data->id')}}" method ="post">
+        <form action="{{route('provinsi.destroy,$data->id')}}" method ="POST">
         @method('delete')
         @csrf
         <a href="{{route('provinsi.edit',$data->id)}}"class = "btn btn-succes">Edit</a>
@@ -43,3 +43,4 @@
     </div>
     </div>
     </div>
+@endsection

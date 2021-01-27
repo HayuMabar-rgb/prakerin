@@ -14,7 +14,9 @@ class KasusController extends Controller
      */
     public function index()
     {
-        //
+        $kasus = Kasus::all();
+        $rw = rw::all();
+        return view('admin.kasus.index',compact('kasus','rw'));
     }
 
     /**
@@ -24,7 +26,9 @@ class KasusController extends Controller
      */
     public function create()
     {
-        //
+        $kasus = Kasus::all();
+        $rw = rw::all();
+        return view('admin.kasus.create',compact('rw'));
     }
 
     /**
@@ -35,7 +39,13 @@ class KasusController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $kasus = new Kasus();
+        $kasus->id_rw = $request->id_rw();
+        $kasus->nama_kasus=$request->nama_kasus();
+        $kasus->save();
+        return redirect()->route('kasus.index')
+        ->with(['succes'=>'data<b>',$kasus->nama_kasus,
+        'berhasil di input</b>']);
     }
 
     /**
@@ -46,7 +56,8 @@ class KasusController extends Controller
      */
     public function show(kasus $kasus)
     {
-        //
+        $kasus = Kasus::findOrFail();
+        return view('admin.kasus.show',compact('kasus'));
     }
 
     /**
@@ -57,7 +68,9 @@ class KasusController extends Controller
      */
     public function edit(kasus $kasus)
     {
-        //
+        $kasus = Kasus::findOrFail($id);
+        $rw = Rw::all();
+        return view('admin.kasus.edit',compact('kasus','rw'));
     }
 
     /**
@@ -69,7 +82,13 @@ class KasusController extends Controller
      */
     public function update(Request $request, kasus $kasus)
     {
-        //
+        $kasus = Kasus::findOrFail();
+        $kasus->id_rw ->$request->id_rw;
+        $kasus->nama_kasus->$request->nama_kasus;
+        $kasus->save();
+        return redirect()->route('kasus.index')
+        ->with(['succes'=>'Data<b>',$kasus->nama_kasus,
+        'berhasil di ubah</b>']);
     }
 
     /**
@@ -80,6 +99,10 @@ class KasusController extends Controller
      */
     public function destroy(kasus $kasus)
     {
-        //
+        $kasus = Kasus::findOrFail($id);
+        $kasus->delete();
+        return redirect()->route('kasus.index')
+        ->with(['succes'=>'data<b>',$kasus->nama_kasus,
+        'berhasil di hapus</b>']);
     }
 }

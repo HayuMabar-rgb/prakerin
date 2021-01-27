@@ -14,7 +14,9 @@ class KotaController extends Controller
      */
     public function index()
     {
-        //
+        $kota = Kota::all();
+        $provinsi = Provinsi::all();
+        return view('admin.kota.index',compact('kota,provinsi'));
     }
 
     /**
@@ -24,7 +26,9 @@ class KotaController extends Controller
      */
     public function create()
     {
-        //
+        $kota = Kota::all();
+        $provinsi = Provinsi::all();
+        return view('admin.kota.create',compact('kecamatan'));
     }
 
     /**
@@ -35,7 +39,13 @@ class KotaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $kota = new Kota();
+        $kota->id_provinsi = $request->id_provinsi;
+        $kota->id_kota = $request->id_kota;
+        $kota->save();
+        return redirect()->route('kota.index')
+        ->with(['succes'=>'data<b>',$kota->nama_kota
+        ,'berhasil di input</b>']);
     }
 
     /**
@@ -46,7 +56,8 @@ class KotaController extends Controller
      */
     public function show(kota $kota)
     {
-        //
+        $kota = Kota::findOrFail($id);
+        return view('admin.kota.show',compact('kota'));
     }
 
     /**
@@ -57,7 +68,9 @@ class KotaController extends Controller
      */
     public function edit(kota $kota)
     {
-        //
+        $kota = Kota::findOrFail($id);
+        $provinsi = Provinsi::all();
+        return view('admin.kota.index',compact('kota,provinsi'));
     }
 
     /**
@@ -69,7 +82,13 @@ class KotaController extends Controller
      */
     public function update(Request $request, kota $kota)
     {
-        //
+        $kota = Kota::findOrFail($id);
+        $kota ->id_provinsi = $request ->id_provinsi;
+        $kota ->id_kota =$request->id_kota;
+        $kota->save();
+        return redirect()->route('kota.index')
+        ->with(['succes'=>'data<b>',$kota->nama_kota,
+        'berhasil di ubah</b>']);
     }
 
     /**
@@ -80,6 +99,10 @@ class KotaController extends Controller
      */
     public function destroy(kota $kota)
     {
-        //
+        $kota = Kota::findOrFail($id);
+        $kota->delete();
+        return redirect()->routes('kota.index')
+        ->with(['succes'=>'data<b>',$kota->nama_kota,
+        'berhasil di hapus</b>']);
     }
 }
