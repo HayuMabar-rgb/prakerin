@@ -14,7 +14,9 @@ class KecamatanController extends Controller
      */
     public function index()
     {
-        //
+        $kecamatan = Kecamatan::all();
+        $kota = Kota::all();
+
     }
 
     /**
@@ -24,7 +26,9 @@ class KecamatanController extends Controller
      */
     public function create()
     {
-        //
+        $kecamatan = Kecamatan::all();
+        $kota = Kota::all();
+        return view('admin.kecamatan.index',compact('kota'));
     }
 
     /**
@@ -34,7 +38,22 @@ class KecamatanController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {$request->validate([
+        'kode_kecamatan'=>'required|max:3|s',
+        'kode_kecamatan'=>'required|unique:s'
+    ],  [
+        'kode_kecamatan.required'=>'kode kecamatan tidak boleh kososng',
+        'kode_kecamatan.max'     =>'kode kecamatan maksimal 3',
+        'kode.kecamatan.unique'  =>'kode kecamatan sudah terdaftar',
+        'nama_kecamatan.required'=>'nama kecamatan tidak boleh kosong',
+        'nama_kecamatan.unique'  =>'Nama kecamatan sudah terdaftar'
+    ]);
+    $kecamatan = new Kecamatan();
+    $kecamatan ->id_kota = $request->id_kota;
+    $kecamatan ->nama_kecamatan = $requrest->nama_kecamatan;
+    $kecamatan ->save();
+    return redirect()->route('kecamatan.index')
+    ->with(['succes'=>' Data <b> ', $kecamatan->nama_kecamatan,'</b> berhasil di input']);
         //
     }
 

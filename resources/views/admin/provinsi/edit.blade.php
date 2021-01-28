@@ -17,6 +17,9 @@
     <div class ="form-group">
     <label for="">Nama provinsi</label>
     <input type="text" name="nama_provinsi" class="form_control" value="{{$provinsi->nama_provinsi}}"> 
+    @if ($errors->has('nama_provinsi'))
+    <span class="text-danger">{{$errors->first('nama_provinsi')}}
+    @endif
     </div>
     <div class= "form-group">
     <button type ="submit" class="btn btn-primary btn-block">simpan</button>

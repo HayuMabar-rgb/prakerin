@@ -16,6 +16,10 @@
     <div class ="form-group">
     <label for="">Nama provinsi</label>
     <input type="text" name="nama_provinsi" class="form_control" required> 
+    @if ($errors->has('nama_provinsi'))
+    <span class="text-danger">{{$errors->first('nama_provinsi')}}
+    @endif
+    </span>
     </div>
     <div class= "form-group">
     <button type ="submit" class="btn btn-primary btn-block">simpan</button>

@@ -81,7 +81,16 @@ class KasusController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, kasus $kasus)
-    {
+    {$request->validate([
+        'kode_kasus'=>'required|max:3|s',
+        'kode_kasus'=>'required|unique:s'
+    ],  [
+        'kode_kasus.required'=>'kode kasus tidak boleh kososng',
+        'kode_kasus.max'=>'kode kasus maksimal 3',
+        'kode.kasus.unique'=>'kode kasus sudah terdaftar',
+        'nama_kasus.required'=>'nama kasus tidak boleh kosong',
+        'nama_kasus.unique'=>'Nama kasus sudah terdaftar'
+    ]);
         $kasus = Kasus::findOrFail();
         $kasus->id_rw ->$request->id_rw;
         $kasus->nama_kasus->$request->nama_kasus;

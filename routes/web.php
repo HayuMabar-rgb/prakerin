@@ -22,11 +22,11 @@ Route::group(['prefix'=> 'admin' , 'middleware'=>['auth']] , function (){
     {
         return view('admin.index');
     };
-    Route::resources('Provinsi',ProvinsiController::class);
-    Route::resources('Kota',KotaController::class);
-    Route::resources('Kecamatan',KecamatanController::class);
-    Route::resources('Desa',DesaController::class);
-    Route::resources('Rt',RtController::class);
+    Route::resources('provinsi',ProvinsiController::class);
+    Route::resources('kota',KotaController::class);
+    Route::resources('kecamatan',KecamatanController::class);
+    Route::resources('desa',DesaController::class);
+    Route::resources('rt',RtController::class);
 });
 
 });
