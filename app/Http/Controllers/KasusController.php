@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\kasus;
+use App\Models\rw;
 use Illuminate\Http\Request;
 
 class KasusController extends Controller

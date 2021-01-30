@@ -19,7 +19,7 @@
                             <th>Aksi</th>
                         </th>
                     </tr>
-                    @php $no =1; @endphp
+                    y@php $no =1; @endphp
                     foreach($provinsi As $data )
                     <tr>
                         <td>{{$no}}</td>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\kota;
+use App\Models\Provinsi;
 use Illuminate\Http\Request;
 
 class KotaController extends Controller
@@ -16,7 +17,7 @@ class KotaController extends Controller
     {
         $kota = Kota::all();
         $provinsi = Provinsi::all();
-        return view('admin.kota.index',compact('kota,provinsi'));
+        return view('admin.kota.index',compact('kota', 'provinsi'));
     }
 
     /**

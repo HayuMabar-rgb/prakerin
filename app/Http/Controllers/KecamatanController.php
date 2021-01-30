@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\kecamatan;
+use App\Models\Kecamatan;
+use App\Models\Http\Controllers\KotaController;
 use Illuminate\Http\Request;
 
 class KecamatanController extends Controller

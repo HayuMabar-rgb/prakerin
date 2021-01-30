@@ -1,11 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\http\Controllers\ProvinsiControllers;
-use App\http\Controllers\KotaControllers;
-use App\http\Controllers\KecamatanControllers;
-use App\http\Controllers\DesaControllers;
-use App\http\Controllers\RtControllers;
+use App\http\Controllers\ProvinsiController;
+use App\http\Controllers\KotaController;
+use App\http\Controllers\KecamatanController;
+use App\http\Controllers\DesaController;
+use App\http\Controllers\RwController;
+use App\http\Controllers\kasusController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -13,20 +14,20 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Route::get('admin',function(){
-    return view('admin.index');
     
-Route::group(['prefix'=> 'admin' , 'middleware'=>['auth']] , function (){
-    Route::resource('provinsi',ProvinsiController::class);
-    {
+Route::group(['prefix'=>'admin','middleware'=>['auth']],function(){
+    Route::get('/',function(){
         return view('admin.index');
-    };
-    Route::resources('provinsi',ProvinsiController::class);
-    Route::resources('kota',KotaController::class);
-    Route::resources('kecamatan',KecamatanController::class);
-    Route::resources('desa',DesaController::class);
-    Route::resources('rt',RtController::class);
-});
+    });
+    Route::resource('provinsi',ProvinsiController::class);
+    Route::resource('kota',KotaController::class);
+    Route::resource('kecamatan',KecamatanController::class);
+    Route::resource('desa',DesaController::class);
+    Route::resource('rw',RwController::class);
+    Route::resource('kasus',KasusController::class);
+
 
 });
+// });
+
+// });
