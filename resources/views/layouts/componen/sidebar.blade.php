@@ -1,9 +1,9 @@
 <nav class="sidenav navbar navbar-vertical  fixed-left  navbar-expand-xs navbar-light bg-white" id="sidenav-main">
-  <div class="scrollbar-inner">
+    <div class="scrollbar-inner">
       <!-- Brand -->
       <div class="sidenav-header  align-items-center">
         <a class="navbar-brand" href="javascript:void(0)">
-          <img src="assets/img/brand/blue.png" class="navbar-brand-img" alt="...">
+          <img src="{{asset('assets/img/brand/blue.png')}}" class="navbar-brand-img" alt="...">
         </a>
       </div>
       <div class="navbar-inner">
@@ -20,25 +20,25 @@
             <li class="nav-item">
               <a class="nav-link" href="../admin/provinsi">
                 <i class="ni ni-planet text-orange"></i>
-                <span class="nav-link-text">provinsi</span>
+                <span class="nav-link-text">Provinsi</span>
               </a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="../admin/kota">
                 <i class="ni ni-pin-3 text-primary"></i>
-                <span class="nav-link-text">kota</span>
+                <span class="nav-link-text">Kota</span>
               </a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="../admin/kecamatan">
                 <i class="ni ni-single-02 text-yellow"></i>
-                <span class="nav-link-text">kecamatan</span>
+                <span class="nav-link-text">Kecamatan</span>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="../admin/desa">
+              <a class="nav-link" href="desa">
                 <i class="ni ni-bullet-list-67 text-default"></i>
-                <span class="nav-link-text">desa</span>
+                <span class="nav-link-text">Desa</span>
               </a>
             </li>
             <li class="nav-item">
@@ -50,7 +50,7 @@
             <li class="nav-item">
               <a class="nav-link" href="../admin/kasus">
                 <i class="ni ni-circle-08 text-pink"></i>
-                <span class="nav-link-text">kasus</span>
+                <span class="nav-link-text">Kasus</span>
               </a>
             </li>
             <li class="nav-item">
@@ -101,3 +101,5 @@
           </ul>
         </div>
       </div>
+    </div>
+  </nav>

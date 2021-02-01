@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\kota;
-use App\Models\Provinsi;
+use App\Models\provinsi;
 use Illuminate\Http\Request;
 
 class KotaController extends Controller
@@ -15,9 +15,12 @@ class KotaController extends Controller
      */
     public function index()
     {
+        // $kota = Kota::with('provinsi')->get();
+        // return view('admin.kota.index',compact('kota'));
+
         $kota = Kota::all();
         $provinsi = Provinsi::all();
-        return view('admin.kota.index',compact('kota', 'provinsi'));
+        return view('admin.kota.index', compact('kota'));
     }
 
     /**
@@ -29,7 +32,7 @@ class KotaController extends Controller
     {
         $kota = Kota::all();
         $provinsi = Provinsi::all();
-        return view('admin.kota.create',compact('kecamatan'));
+        return view('admin.kota.create' , compact('provinsi','kota'));
     }
 
     /**
@@ -41,22 +44,23 @@ class KotaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'kode_kota'=>'required|max:3|kotas',
-            'kode_kota'=>'required|unique:kotas'
-        ],  [
-            'kode_kota.required'=>'kode Kota tidak boleh kososng',
-            'kode_kota.max'=>'kode kota maksimal 3',
-            'kode.kota.unique'=>'kode kota sudah terdaftar',
-            'nama_kota.required'=>'nama kota tidak boleh kosong',
-            'nama_kota.unique'=>'Nama kota sudah terdaftar'
+            'kode_kota' => 'required|max:7|unique:kotas',
+            'nama_kota' => 'required'
+        ], [
+            'kode_kota.required' => 'Kode kota tidak boleh kosong',
+            'kode_kota.max' => 'Kode maximal 7 karakter',
+            'kode_kota.unique' => 'Kode kota sudah terdaftar',
+            'nama_kota.required' => 'Nama kota tidak boleh kosong',
         ]);
+        
         $kota = new Kota();
         $kota->id_provinsi = $request->id_provinsi;
-        $kota->id_kota = $request->id_kota;
+        $kota->kode_kota = $request->kode_kota;
+        $kota->nama_kota = $request->nama_kota;
         $kota->save();
         return redirect()->route('kota.index')
-        ->with(['succes'=>'data<b>',$kota->nama_kota
-        ,'berhasil di input</b>']);
+                    ->with(['succes'=>'Data <b>',$kota->nama_kota,
+                    '</b> berhasil di input']);
     }
 
     /**
@@ -65,10 +69,10 @@ class KotaController extends Controller
      * @param  \App\Models\kota  $kota
      * @return \Illuminate\Http\Response
      */
-    public function show(kota $kota)
+    public function show($id)
     {
         $kota = Kota::findOrFail($id);
-        return view('admin.kota.show',compact('kota'));
+        return view('admin.kota.show', compact('kota'));
     }
 
     /**
@@ -77,11 +81,11 @@ class KotaController extends Controller
      * @param  \App\Models\kota  $kota
      * @return \Illuminate\Http\Response
      */
-    public function edit(kota $kota)
+    public function edit($id)
     {
         $kota = Kota::findOrFail($id);
         $provinsi = Provinsi::all();
-        return view('admin.kota.index',compact('kota,provinsi'));
+        return view('admin.kota.edit', compact('kota','provinsi'));
     }
 
     /**
@@ -91,15 +95,26 @@ class KotaController extends Controller
      * @param  \App\Models\kota  $kota
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, kota $kota)
+    public function update(Request $request, $id)
     {
+        $request->validate([
+            'kode_kota' => 'required|max:7',
+            'nama_kota' => 'required|unique:kotas'
+        ], [
+            'kode_kota.required' => 'Kode kota tidak boleh kosong',
+            'kode_kota.max' => 'Kode maximal 7 karakter',
+            'nama_kota.required' => 'Nama kota tidak boleh kosong',
+            'nama_kota.unique' => 'Nama kota sudah terdaftar'
+        ]);
+
         $kota = Kota::findOrFail($id);
-        $kota ->id_provinsi = $request ->id_provinsi;
-        $kota ->id_kota =$request->id_kota;
+        $kota->id_provinsi = $request->id_provinsi;
+        $kota->kode_kota = $request->kode_kota;
+        $kota->nama_kota = $request->nama_kota;
         $kota->save();
         return redirect()->route('kota.index')
-        ->with(['succes'=>'data<b>',$kota->nama_kota,
-        'berhasil di ubah</b>']);
+                    ->with(['succes'=>'Data <b>',$kota->nama_kota,
+                    '</b> berhasil di edit']);
     }
 
     /**
@@ -108,12 +123,12 @@ class KotaController extends Controller
      * @param  \App\Models\kota  $kota
      * @return \Illuminate\Http\Response
      */
-    public function destroy(kota $kota)
+    public function destroy($id)
     {
         $kota = Kota::findOrFail($id);
         $kota->delete();
-        return redirect()->routes('kota.index')
-        ->with(['succes'=>'data<b>',$kota->nama_kota,
-        'berhasil di hapus</b>']);
+        return redirect()->route('kota.index')
+                    ->with(['succes'=>'Data <b>',$kota->nama_kota,
+                    '</b> berhasil di hapus']);
     }
 }

@@ -25,6 +25,12 @@ Route::group(['prefix'=>'admin','middleware'=>['auth']],function(){
     Route::resource('desa',DesaController::class);
     Route::resource('rw',RwController::class);
     Route::resource('kasus',KasusController::class);
+    Route::get('/posts', 'PostsController@index');
+    Route::post('/posts/store', 'PostsController@store');
+    Route::get('/posts/{id?}', 'PostsController@show');
+    Route::post('/posts/update/{id?}', 'PostsController@update');
+    Route::delete('/posts/{id?}', 'PostsController@destroy');
+
 
 
 });
