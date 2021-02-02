@@ -8,10 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class kecamatan extends Model
 {
     public function kota(){
-        $this->belongsTo('app\models\kecamatan\id_kota');
+        $this->belongsTo('App\Models\Kota\id_kota');
     }
     public function desa(){
-        $this->hasMany('app\models\kota\id_kecamatan');
+        $this->hasMany('App\Models\desa\id_kecamatan');
     }
     use HasFactory;
 }

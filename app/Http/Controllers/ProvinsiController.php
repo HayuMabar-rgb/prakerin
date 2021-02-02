@@ -14,8 +14,8 @@ class ProvinsiController extends Controller
      */
     public function index()
     {
-    $provinsi = Provinsi::all();
-    return view ('admin.provinsi.index', compact ('provinsi'));
+        $provinsi = Provinsi::all();
+        return view('admin.provinsi.index',compact('provinsi'));
     }
 
     /**
@@ -37,23 +37,25 @@ class ProvinsiController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'kode_provinsi'=>'required|max:3|unique:provinsis',
-            'nama_provinsi'=>'required|unique:provinsis'
+            'kode_provinsi' => 'required|max:3|unique:provinsis',
+            'nama_provinsi' => 'required|unique:provinsis'
         ], [
-            'kode_provinsi.required'=>'Kode Provinsi tidak boleh kosong',
-            'kode_provinsi.max'=>'kode Maksimal 3 karakter',
-            'kode_provinsi.unique'=>'kode provini sudah terdaftar',
-            'nama_provinsi.required'=>'Nama provinsi tidak boleh kosong',
-            'nama_provinsi.unique'=>'nama provinsi sudah terdaftar'
-            ]);
+            'kode_provinsi.required' => 'Kode Provinsi tidak boleh kosong',
+            'kode_provinsi.max' => 'Kode maximal 3 karakter',
+            'kode_provinsi.unique' => 'Kode Provinsi sudah terdaftar',
+            'nama_provinsi.required' => 'Nama Provinsi tidak boleh kosong',
+            'nama_provinsi.unique' => 'Nama Provinsi sudah terdaftar'
+        ]);
+
         $provinsi = new Provinsi();
-        $provinsi-> kode_provinsi = $request -> kode_provinsi;
-        $provinsi-> nama_provinsi = $request -> nama_provinsi;
+        $provinsi->kode_provinsi = $request->kode_provinsi;
+        $provinsi->nama_provinsi = $request->nama_provinsi;
         $provinsi->save();
         return redirect()->route('provinsi.index')
-        ->with(['succes'=>'Data<b>',$provinsi->nama_provinsi,
-        '</b> berhasil di input']);
+                    ->with(['succes'=>'Data <b>',$provinsi->nama_provinsi,
+                    '</b> berhasil di input']);
     }
+
     /**
      * Display the specified resource.
      *
@@ -62,8 +64,8 @@ class ProvinsiController extends Controller
      */
     public function show($id)
     {
-        $provinsi = Provinsi:: findOrFail($id);
-        return view('admin.provinsi.show', compact ('provinsi'));
+        $provinsi = Provinsi::findOrFail($id);
+        return view('admin.provinsi.show', compact('provinsi'));
     }
 
     /**
@@ -72,10 +74,10 @@ class ProvinsiController extends Controller
      * @param  \App\Models\provinsi  $provinsi
      * @return \Illuminate\Http\Response
      */
-    public function edit(provinsi $provinsi)
+    public function edit($id)
     {
         $provinsi = Provinsi::findOrFail($id);
-        return view('admin.provinsi.edit',compact('provinsi'));
+        return view('admin.provinsi.edit', compact('provinsi'));
     }
 
     /**
@@ -85,16 +87,24 @@ class ProvinsiController extends Controller
      * @param  \App\Models\provinsi  $provinsi
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        $provinsi = new Provinsi();
-        $provinsi-> kode_provinsi = $request -> kode_provinsi;
-        $provinsi-> nama_provinsi = $request -> nama_provinsi;
+        $request->validate([
+            'kode_provinsi' => 'required|max:3',
+            'nama_provinsi' => 'required'
+        ], [
+            'kode_provinsi.required' => 'Kode Provinsi tidak boleh kosong',
+            'kode_provinsi.max' => 'Kode maximal 3 karakter',
+            'nama_provinsi.required' => 'Nama Provinsi tidak boleh kosong',
+        ]);
+
+        $provinsi = Provinsi::findOrFail($id);
+        $provinsi->kode_provinsi = $request->kode_provinsi;
+        $provinsi->nama_provinsi = $request->nama_provinsi;
         $provinsi->save();
-        return redirect()->route('provinsi')
-        ->with(['succes'=>'data <b>',$provinsi->nama_provinsi.
-            '</b> berhasil di edit']);
-    
+        return redirect()->route('provinsi.index')
+                    ->with(['info'=>'Data <b>',$provinsi->nama_provinsi,
+                    '</b> berhasil di edit']);
     }
 
     /**
@@ -103,12 +113,12 @@ class ProvinsiController extends Controller
      * @param  \App\Models\provinsi  $provinsi
      * @return \Illuminate\Http\Response
      */
-    public function destroy(provinsi $provinsi)
+    public function destroy($id)
     {
         $provinsi = Provinsi::findOrFail($id);
         $provinsi->delete();
-        return redirect()->route('provinsi')
-        ->with(['succes'=>'data <b>',$provinsi->nama_provinsi.
-            '</b> berhasil di hapus']);
+        return redirect()->route('provinsi.index')
+                    ->with(['succes'=>'Data <b>',$provinsi->nama_provinsi,
+                    '</b> berhasil di hapus']);
     }
 }

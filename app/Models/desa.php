@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class desa extends Model
 {
     public function kecamatan(){
-        $this->belongsTo('app\models\kecamatan\id_kecamatan');
+        $this->belongsTo('app\models\kecamatan','id_kota');
     }
     
     public function rw(){
-        $this->hasMany('app\models\rw\id_desa');
+        $this->hasMany('app\models\rw','id_desa');
 
     }
     

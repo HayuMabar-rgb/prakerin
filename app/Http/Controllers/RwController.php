@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\rw;
+use App\Models\desa;
 use Illuminate\Http\Request;
 
 class RwController extends Controller
@@ -17,6 +18,9 @@ class RwController extends Controller
         $rw = Rw::all();
         $desa = Desa::all();
         return view('admin.rw.index',compact('rw','desa'));
+
+        // $rw = rw::with('admin.desa')->get();
+        // return view('admin.rw.index',compact('rw'));
     }
 
     /**
@@ -28,7 +32,7 @@ class RwController extends Controller
     {
         $rw = Rw::all();
         $desa = Desa::all();
-        return view('admin.rw.create',compact('rw','desa'));
+        return view('admin.rw.create' , compact('desa'));
     }
 
     /**
@@ -39,13 +43,20 @@ class RwController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'nama_rw' => 'required|unique:rws'
+        ], [
+            'nama_rw.required' => 'Nama rw tidak boleh kosong',
+            'nama_rw.unique' => 'Nama desa sudah terdaftar'
+        ]);
+
         $rw = new Rw();
-        $rw ->id_desa = $request->id_desa;
-        $rw ->nama_rw = $request->id_rw;
-        $rw ->save();
+        $rw->id_desa = $request->id_desa;
+        $rw->nama_rw = $request->nama_rw;
+        $rw->save();
         return redirect()->route('rw.index')
-        ->with(['succes'=>'Data <b>',$rw->nama_rw,
-        'berhasil di input </b>']);
+                    ->with(['succes'=>'Data <b>',$rw->nama_rw,
+                    '</b> berhasil di input']);
     }
 
     /**
@@ -56,8 +67,8 @@ class RwController extends Controller
      */
     public function show($id)
     {
-        $rw = Rw::findOrFail($id);
-        return view('admin.rw.show');
+        $rw = rw::findOrFail($id);
+        return view('admin.rw.show', compact('rw'));
     }
 
     /**
@@ -68,9 +79,9 @@ class RwController extends Controller
      */
     public function edit($id)
     {
-        $rw = Rw::findOrFail();
-        $kecamatan = Kecamatan::all();
-        return view('admin.rw.edit',compact('rw','desa'));
+        $rw = Rw::findOrFail($id);
+        $desa = Desa::all();
+        return view('admin.rw.edit', compact('rw','desa'));
     }
 
     /**
@@ -82,13 +93,19 @@ class RwController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'nama_rw' => 'required'
+        ], [
+            'nama_rw.required' => 'Nama rw tidak boleh kosong',
+        ]);
+        
         $rw = Rw::findOrFail($id);
-        $rw ->id_desa = $request->id_desa;
-        $rw ->id_rw = $request ->id_rw;
-        $rw ->save();
+        $rw->id_desa = $request->id_desa;
+        $rw->nama_rw = $request->nama_rw;
+        $rw->save();
         return redirect()->route('rw.index')
-        ->with(['succe'=>'data<b>', $rw->nama_rw,
-        'berhasil di edit</b>']);
+                    ->with(['succes'=>'Data <b>',$rw->nama_rw,
+                    '</b> berhasil di edit']);
     }
 
     /**
@@ -97,12 +114,12 @@ class RwController extends Controller
      * @param  \App\Models\rw  $rw
      * @return \Illuminate\Http\Response
      */
-    public function destroy(rw $rw)
+    public function destroy($id)
     {
         $rw = Rw::findOrFail($id);
         $rw->delete();
         return redirect()->route('rw.index')
-        ->with(['succes'=>'data<b>',$rw->nama_rw,
-        '</b> berhasil di hapus']);
+                    ->with(['succes'=>'Data <b>',$rw->nama_rw,
+                    '</b> berhasil di hapus']);
     }
 }

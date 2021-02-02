@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class provinsi extends Model
 {
     public function kota(){
-        return $this->hasMany('app\models\kota\id_provinsi');
+        return $this->hasMany('App\Models\kota','id_provinsi');
     }
     use HasFactory;
     protected $fillable = ['kode_provinsi','nama_provinsi'];

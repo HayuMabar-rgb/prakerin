@@ -17,7 +17,9 @@ class DesaController extends Controller
     {
         $desa = Desa::all();
         $kecamatan = Kecamatan::all();
+        return view('admin.desa.index',compact('desa','kecamatan'));
 
+        // $desa = desa::with('admin.kecamatan')->get();
         // return view('admin.desa.index',compact('desa'));
     }
 
@@ -30,7 +32,7 @@ class DesaController extends Controller
     {
         $desa = Desa::all();
         $kecamatan = Kecamatan::all();
-        return view('admin.desa.create', compact ('kecamatan'));
+        return view('admin.desa.create' , compact('kecamatan'));
     }
 
     /**
@@ -42,21 +44,19 @@ class DesaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'kode_desa'=>'required|max:3|s',
-            'kode_desa'=>'required|unique:s'
-        ],  [
-            'kode_desa.required'=>'kode desa tidak boleh kososng',
-            'kode_desa.max'=>'kode desa maksimal 3',
-            'kode.desa.unique'=>'kode desa sudah terdaftar',
-            'nama_desa.required'=>'nama desa tidak boleh kosong',
-            'nama_desa.unique'=>'Nama desa sudah terdaftar'
+            'nama_desa' => 'required|unique:desas'
+        ], [
+            'nama_desa.required' => 'Nama desa tidak boleh kosong',
+            'nama_desa.unique' => 'Nama desa sudah terdaftar'
         ]);
+
         $desa = new Desa();
-        $desa ->id_kecamatan = $request->id_kecamatan;
-        $desa ->nama_desa = $requrest->nama_desa;
-        $desa ->save();
+        $desa->id_kecamatan = $request->id_kecamatan;
+        $desa->nama_desa = $request->nama_desa;
+        $desa->save();
         return redirect()->route('desa.index')
-        ->with(['succes'=>' Data <b> ', $desa->nama_desa,'</b> berhasil di input']);
+                    ->with(['succes'=>'Data <b>',$desa->nama_desa,
+                    '</b> berhasil di input']);
     }
 
     /**
@@ -65,10 +65,10 @@ class DesaController extends Controller
      * @param  \App\Models\desa  $desa
      * @return \Illuminate\Http\Response
      */
-    public function show(desa $desa)
+    public function show($id)
     {
         $desa = Desa::findOrFail($id);
-        return view('admin.desa.show',compact('desa'));
+        return view('admin.desa.show', compact('desa'));
     }
 
     /**
@@ -77,11 +77,11 @@ class DesaController extends Controller
      * @param  \App\Models\desa  $desa
      * @return \Illuminate\Http\Response
      */
-    public function edit(desa $desa)
+    public function edit($id)
     {
         $desa = Desa::findOrFail($id);
         $kecamatan = Kecamatan::all();
-        return view('admin.desa.edit');
+        return view('admin.desa.edit', compact('desa','kecamatan'));
     }
 
     /**
@@ -91,14 +91,21 @@ class DesaController extends Controller
      * @param  \App\Models\desa  $desa
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, desa $desa)
+    public function update(Request $request, $id)
     {
-        $desa = Desa::findOrFail();
-        $desa ->id_kecamatan = $requrest->id_kecamatan;
-        $desa ->nama_desa = $request->nama_desa;
-        $desa ->save();
-        return redirect()->route('desa.index')->with(['succes'=>'Data<b>' , $desa->nama_desa,
-        '</b> berhasil di edit']);
+        $request->validate([
+            'nama_desa' => 'required'
+        ], [
+            'nama_desa.required' => 'Nama desa tidak boleh kosong',
+        ]);
+        
+        $desa = Desa::findOrFail($id);
+        $desa->id_kecamatan = $request->id_kecamatan;
+        $desa->nama_desa = $request->nama_desa;
+        $desa->save();
+        return redirect()->route('desa.index')
+                    ->with(['succes'=>'Data <b>',$desa->nama_desa,
+                    '</b> berhasil di edit']);
     }
 
     /**
@@ -107,8 +114,12 @@ class DesaController extends Controller
      * @param  \App\Models\desa  $desa
      * @return \Illuminate\Http\Response
      */
-    public function destroy(desa $desa)
+    public function destroy($id)
     {
-        //
+        $desa = Desa::findOrFail($id);
+        $desa->delete();
+        return redirect()->route('desa.index')
+                    ->with(['succes'=>'Data <b>',$desa->nama_desa,
+                    '</b> berhasil di hapus']);
     }
 }
